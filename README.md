@@ -1,5 +1,6 @@
 # 🏢 Enterprise Data Warehouse - AdventureWorks Sales Analytics
 ### Metadata-Driven ETL Framework with SCD Type 1 & 2 Implementation
+## **Built to showcase professional data engineering capabilities for portfolio **
 
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
 [![SSIS](https://img.shields.io/badge/SSIS-ETL%20Package-0078D4?logo=microsoft&logoColor=white)](https://docs.microsoft.com/sql/integration-services)
@@ -503,7 +504,7 @@ This project represents **3+ months of development** demonstrating:
 - SSIS package development
 - Comprehensive documentation
 
-**Built to showcase professional data engineering capabilities for portfolio and interviews.**
+
 
 ---
 
