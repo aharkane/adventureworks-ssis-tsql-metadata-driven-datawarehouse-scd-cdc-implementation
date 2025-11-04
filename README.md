@@ -13,7 +13,7 @@
 ## 📋 Table of Contents
 
 - [Project Overview](#-project-overview)
-- [OLTP DWH Tables Mapping](#-oltp-dwh-tables-mapping)
+- [OLTP DWH Tables Mapping](#oltp-dwh-tables-mapping)
 - [Architecture](#-architecture)
 - [Key Features](#-key-features)
 - [Technical Skills Demonstrated](#-technical-skills-demonstrated)
@@ -58,6 +58,7 @@ The data warehouse integrates sales data from the AdventureWorks OLTP system, tr
 ---
 
 ## 🏗️ OLTP DWH Tables Mapping
+
 | DWH_Table   | Source_OLTP_Tables                                               | Row_Count | SCD_Type      | Natural_Key_From_OLTP                     | Surrogate_Key_DWH                     | Foreign_Keys_to_Dimensions                                   | Key_Attributes                                                                                     |
 |-------------|------------------------------------------------------------------|------------|---------------|-------------------------------------------|---------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
 | **DimAddress**   | Person.Address, Person.StateProvince, Sales.SalesTerritory, Person.CountryRegion | 450        | Type 0        | AddressID (from OLTP)                     | AddressDWKey (Identity/Auto-generated) | StateProvinceID, TerritoryID                                | City, PostalCode, StateProvinceName, TerritoryName, CountryRegionName                        |
