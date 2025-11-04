@@ -9,22 +9,59 @@
 > **A production-ready, metadata-driven data warehouse implementation featuring incremental loading, slowly changing dimensions, and automated ETL orchestration.**
 
 ---
+## 🛠️ Technical Skills Demonstrated
+
+<table>
+<tr>
+<td width="55%" valign="top">
+
+**Data Warehousing**
+- ✅ Dimensional Modeling (Star Schema)
+- ✅ Slowly Changing Dimensions (SCD 0, 1 & 2)
+- ✅ Fact & Dimension Tables Design
+- ✅ Data Warehouse Architecture
+- ✅ Incremental Loading Strategies
+- ✅ ETL Best Practices
+
+**SQL Development**
+- ✅ Advanced T-SQL Programming (3,500+ LOC)
+- ✅ Dynamic SQL Generation
+- ✅ Stored Procedures (19 procedures)
+- ✅ Complex Joins & Aggregations
+- ✅ Window Functions & CTEs
+- ✅ Transaction Management
+
+</td>
+<td width="50%" valign="top">
+
+**ETL & Data Integration**
+- ✅ SSIS Package Development
+- ✅ Incremental Data Loading
+- ✅ Change Data Capture (CDC)
+- ✅ ETL Control Framework
+- ✅ Error Handling & Logging
+- ✅ Performance Optimization
+
+**Data Modeling**
+- ✅ Metadata-Driven Development
+- ✅ Data Dictionary Management
+- ✅ Schema Design (4 schemas)
+- ✅ Column Mapping & Transformation
+- ✅ Data Type Conversion
+- ✅ Business Rules Implementation
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 📋 Table of Contents
 
-- [Project Overview](#-project-overview)
-- [OLTP DWH Tables Mapping](#oltp-dwh-tables-mapping)
-- [Architecture](#-architecture)
-- [Key Features](#-key-features)
-- [Technical Skills Demonstrated](#-technical-skills-demonstrated)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [ETL Process Flow](#-etl-process-flow)
-- [Data Model](#-data-model)
-- [Documentation](#-documentation)
-- [Author](#-author)
 
 ---
+
+
 
 ## 🎯 Project Overview
 
@@ -61,11 +98,11 @@ The data warehouse integrates sales data from the AdventureWorks OLTP system, tr
 
 | DWH_Table   | Source_OLTP_Tables                                               | Row_Count | SCD_Type      | Natural_Key_From_OLTP                     | Surrogate_Key_DWH                     | Foreign_Keys_to_Dimensions                                   | Key_Attributes                                                                                     |
 |-------------|------------------------------------------------------------------|------------|---------------|-------------------------------------------|---------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| **DimAddress**   | Person.Address, Person.StateProvince, Sales.SalesTerritory, Person.CountryRegion | 450        | Type 0        | AddressID (from OLTP)                     | AddressDWKey (Identity/Auto-generated) | StateProvinceID, TerritoryID                                | City, PostalCode, StateProvinceName, TerritoryName, CountryRegionName                        |
-| **DimCustomer**  | Sales.Customer, Sales.Store, Person.Person, Sales.SalesTerritory, Person.CountryRegion | 30,119     | Type 1 & 2  | CustomerID (from Sales.Customer)          | CustomerDWKey (Identity/Auto-generated) | CustomerPersonID, StoreID, SalesPersonID, TerritoryID        | FirstName (Type 2), LastName (Type 2), StoreName (Type 1), JobTitle (Type 1), TerritoryName (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End |
-| **DimProduct**    | Production.Product, Production.ProductCategory, Production.ProductSubcategory, Production.UnitMeasure | 504        | Type 1 & 2  | ProductID (from OLTP)                     | ProductDWKey (Identity/Auto-generated)  | ProductCategoryID, ProductSubcategoryID                     | ProductName, ProductColor, ListPrice (Type 2), StandardCost (Type 1), ProductSize, IsCurrent, ValidityDate_Start, ValidityDate_End |
-| **DimSalesPerson**| Sales.SalesPerson, HumanResources.Employee, Person.Person, Sales.SalesTerritory | 17         | Type 1 & 2  | SalesPersonID (from Sales.SalesPerson)    | SalesPersonDWKey (Identity/Auto-generated) | TerritoryID                                              | FirstName (Type 2), LastName (Type 2), JobTitle (Type 1), SalesQuota (Type 1), Commission (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End   |
-| **FactSales**     | Sales.SalesOrderHeader, Sales.SalesOrderDetail                | 121,317    | Transactional | SalesOrderID, SalesOrderDetailID (from OLTP) | SalesOrderID, SalesOrderDetailID (Pass-through from OLTP) | CustomerDWKey, ProductDWKey, SalesPersonDWKey, AddressDWKey | OrderDate, OrderQty, UnitPrice, LineTotal, OrderSubTotal, OrderFreight, OrderTotalDue               |
+| **DimAddress**   | Person.Address, Person.StateProvince, Sales.SalesTerritory, Person.CountryRegion | 450        | Type 0        | AddressID (from OLTP)                     | AddressDWKey (Identity/Auto-generated) |  | City, PostalCode, StateProvinceName, TerritoryName, CountryRegionName                        |
+| **DimCustomer**  | Sales.Customer, Sales.Store, Person.Person, Sales.SalesTerritory, Person.CountryRegion | 30,119     | Type 1 & 2  | CustomerID (from Sales.Customer)          | CustomerDWKey (Identity/Auto-generated) |  | FirstName (Type 2), LastName (Type 2), StoreName (Type 1), JobTitle (Type 1), TerritoryName (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End |
+| **DimProduct**    | Production.Product, Production.ProductCategory, Production.ProductSubcategory, Production.UnitMeasure | 504        | Type 1 & 2  | ProductID (from OLTP)                     | ProductDWKey (Identity/Auto-generated)  |  | ProductName, ProductColor, ListPrice (Type 2), StandardCost (Type 1), ProductSize, IsCurrent, ValidityDate_Start, ValidityDate_End |
+| **DimSalesPerson**| Sales.SalesPerson, HumanResources.Employee, Person.Person, Sales.SalesTerritory | 17         | Type 1 & 2  | SalesPersonID (from Sales.SalesPerson)    | SalesPersonDWKey (Identity/Auto-generated) | | FirstName (Type 2), LastName (Type 2), JobTitle (Type 1), SalesQuota (Type 1), Commission (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End   |
+| **FactSales**     | Sales.SalesOrderHeader, Sales.SalesOrderDetail                | 121,317    | Transactional | SalesOrderID, SalesOrderDetailID (from OLTP) | SalesOrderID, SalesOrderDetailID (Pass-through from OLTP) | CustomerID, ProductID, SalesPersonID, AddressID | OrderDate, OrderQty, UnitPrice, LineTotal, OrderSubTotal, OrderFreight, OrderTotalDue               |
 
 ---
 ## 🏗️ Architecture
@@ -169,52 +206,7 @@ TableName, ETLCutoffDate (last successful load)
 
 ---
 
-## 🛠️ Technical Skills Demonstrated
 
-<table>
-<tr>
-<td width="50%" valign="top">
-
-**Data Warehousing**
-- ✅ Dimensional Modeling (Star Schema)
-- ✅ Slowly Changing Dimensions (SCD 0, 1 & 2)
-- ✅ Fact & Dimension Tables Design
-- ✅ Data Warehouse Architecture
-- ✅ Incremental Loading Strategies
-- ✅ ETL Best Practices
-
-**SQL Development**
-- ✅ Advanced T-SQL Programming (3,500+ LOC)
-- ✅ Dynamic SQL Generation
-- ✅ Stored Procedures (19 procedures)
-- ✅ Complex Joins & Aggregations
-- ✅ Window Functions & CTEs
-- ✅ Transaction Management
-
-</td>
-<td width="50%" valign="top">
-
-**ETL & Data Integration**
-- ✅ SSIS Package Development
-- ✅ Incremental Data Loading
-- ✅ Change Data Capture (CDC)
-- ✅ ETL Control Framework
-- ✅ Error Handling & Logging
-- ✅ Performance Optimization
-
-**Data Modeling**
-- ✅ Metadata-Driven Development
-- ✅ Data Dictionary Management
-- ✅ Schema Design (4 schemas)
-- ✅ Column Mapping & Transformation
-- ✅ Data Type Conversion
-- ✅ Business Rules Implementation
-
-</td>
-</tr>
-</table>
-
----
 
 ## 📁 Project Structure
 
@@ -338,7 +330,6 @@ EXEC integration.LoadUpdatesAddress;
 -- Repeat for all dimensions...
 ```
 
-📖 **Detailed instructions**: See [INSTALLATION.md](INSTALLATION.md)
 
 ---
 
@@ -471,12 +462,7 @@ WHERE CustomerID = 1
    - SCD type specifications
    - Data types and business rules
 
-2. **[OLTP-Tables-Diagram-Listing.md](Documentation/OLTP-Tables-Diagram-Listing.md)** (8.6 KB)
-   - Visual table relationships
-   - Entity relationship diagrams
-   - Data lineage documentation
-
-3. **[PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md)**
+2. **[PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md)**
    - Detailed file organization
    - Execution sequence
    - Naming conventions
@@ -487,9 +473,9 @@ WHERE CustomerID = 1
 ## 👨‍💻 Author
 
 **Your Name**
-- 💼 LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
-- 🐙 GitHub: [@yourusername](https://github.com/yourusername)
-- 📧 Email: your.email@example.com
+- 💼 LinkedIn: [My LinkedIn Profile](https://www.linkedin.com/in/aharkane/)
+- 🐙 GitHub: [@aharkane](https://github.com/aharkane)
+- 📧 Email: your.harkaneamine@gmail.com
 
 ### About This Project
 
@@ -573,7 +559,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ If you found this project helpful, please give it a star! ⭐**
 
-Made with ❤️ and ☕ by [Your Name]
+Made with ❤️ and ☕ by [Harkane Amine]
 
 *Last Updated: November 2025*
 
