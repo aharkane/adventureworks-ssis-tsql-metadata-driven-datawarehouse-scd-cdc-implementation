@@ -91,9 +91,9 @@ The data warehouse integrates sales data from the AdventureWorks OLTP system, tr
 │                             ▼                                       │
 │  ┌────────────────────────────────────────────────────────────┐   │
 │  │                   STAGING LAYER (STG)                       │   │
-│  │  • Addressstaging     • Customerstaging                     │   │
-│  │  • Productstaging     • SalesPersonstaging                  │   │
-│  │  • Salesstaging       (Temporary storage for ETL)           │   │
+│  │  • Address_staging     • Customer_staging                     │   │
+│  │  • Product_staging     • SalesPerson_staging                  │   │
+│  │  • Sales_staging       (Temporary storage for ETL)           │   │
 │  └────────────────────────────────────────────────────────────┘   │
 │                             │                                       │
 │                             ▼                                       │
@@ -208,6 +208,10 @@ TableName, ETLCutoffDate (last successful load)
 
 ```
 1. DWH Infrastructure Builder/
+│
+├── 📂 Source DB/
+│   ├── AdvWrks2022_OLTP_Backup.bak
+│
 │
 ├── 📂 Documentation/
 │   ├── Data-Dictionnary.xlsx                    # Complete data dictionary
