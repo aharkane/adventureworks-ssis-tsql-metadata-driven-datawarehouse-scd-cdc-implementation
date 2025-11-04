@@ -470,11 +470,6 @@ WHERE CustomerID = 1
    - Naming conventions
    - Deployment guidelines
 
-4. **[INSTALLATION.md](INSTALLATION.md)**
-   - Step-by-step setup guide
-   - Troubleshooting section
-   - Verification scripts
-
 ---
 
 ## 👨‍💻 Author
