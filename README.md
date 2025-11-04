@@ -474,7 +474,7 @@ WHERE CustomerID = 1
 
 ### Included Documentation
 
-1. **[Data-Dictionnary.xlsx](Documentation/Data-Dictionnary.xlsx)** (44 KB)
+1. **[Data-Dictionnary.xlsx](Data-Dictionnary.xlsx)** (44 KB)
    - Complete OLTP → DWH table mappings
    - Column-level transformations
    - SCD type specifications
