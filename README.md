@@ -231,17 +231,16 @@ TableName, ETLCutoffDate (last successful load)
 ```
 1. DWH Infrastructure Builder/
 │
-├── 📂 Source DB/
+├── 📂 Source DB/ 
 │   ├── AdvWrks2022_OLTP_Backup.bak
 │
 │
-├── 📂 Documentation/
-│   ├── Data-Dictionnary.xlsx                    # Complete data dictionary
-│   ├── OLTP-Tables-Diagram-and-listing.md       # Visual table relationships
-│   └── OLT-Tables-List.md                       # Source table listing
+├──  Data-Dictionnary.xlsx                     # Complete data dictionary
+│
+├──  Project-Structure.md                     # Complete Project Structure
 │
 ├── 📂 ETL/
-│   └── ETL.xml                                  # SSIS Package (150 KB)
+│   └── ETL.package                                  # SSIS Package (150 KB)
 │
 └── 📂 SQL Scripts/
     │
