@@ -1,6 +1,4 @@
-# 🏢 Enterprise Data Warehouse - AdventureWorks Sales Analytics
-## Built to showcase my professional data engineering, and data warehousing capabilities
-### Metadata-Driven ETL Framework with SCD Type 1 & 2 Implementation
+# Metadata-Driven Data Warehouse Implementation using SQL and ETL Pipelines 
 
 
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server&logoColor=white)](https://www.microsoft.com/sql-server)
@@ -12,32 +10,24 @@
 
 ---
 
-
 ## 📋 Table of Contents
 
 
 - [Project Overview](#-project-overview)
-- [Technical Skills Demonstrated](#%EF%B8%8F-technical-skills-demonstrated)
-- [OLTP to DWH Tables Mapping](#%EF%B8%8F-oltp-dwh-tables-mapping)
-- [System Architecture](#%EF%B8%8F-architecture)
-- [Key Features](#-key-features)
 - [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [ETL Process Flow](#-etl-process-flow)
-- [Data Model](#-data-model)
+- [Technical Skills Demonstrated](#%EF%B8%8F-technical-skills-demonstrated)
+- [🏢 Data Wareshouse Developemnt Process](#-data-wareshouse-developemnt-process)
+  - [1. DWH Setup: OLTP DWH Tables Mapping](#1-dwh-setup-oltp-dwh-tables-mapping)
+  - [2. Architecture](#2-architecture)
+  - [3. Implemented Key Features ](#3-implemented-key-features)
+  - [4. ETL Process Flow: Daily ETL Execution Sequence](#4-etl-process-flow-daily-etl-execution-sequence)
+  - [5. Final Result: Star Schema Data Model](#5-final-result-star-schema-data-model)
+  - [6. Performance & Statistics](#6-performance--statistics)
 - [Documentation](#-documentation)
-- [Performance Metrics](#-performance-metrics)
-- [Author](#%E2%80%8D-author)
-- [License](#-license)
-
-
 ---
 
-
-
 ## 🎯 Project Overview
-
-This project showcases a **comprehensive enterprise data warehouse solution** built from scratch, demonstrating advanced data engineering concepts including:
+This project showcases a metadata-driven data warehouse implementation featuring incremental loading, slowly changing dimensions, and automated ETL orchestration including:
 
 - ✅ **Metadata-Driven Architecture** - Dynamic table generation and ETL process automation
 - ✅ **Slowly Changing Dimensions (SCD)** - Type 0, Type 1, and Type 2 implementations with validity tracking
@@ -45,187 +35,7 @@ This project showcases a **comprehensive enterprise data warehouse solution** bu
 - ✅ **SSIS ETL Orchestration** - Parallel execution with error handling and logging
 - ✅ **ETL Control Framework** - Lineage tracking and audit trail for data governance
 - ✅ **Star Schema Design** - Optimized dimensional modeling for analytical queries
-
-### Business Context
-
-The data warehouse integrates sales data from the AdventureWorks OLTP system, transforming it into an analytical star schema that supports:
-- 📊 Customer behavior analysis
-- 📈 Product performance tracking  
-- 💰 Sales trend analysis
-- 🎯 Territory and salesperson performance metrics
-
-### Project Statistics
-
-- **43 SQL Files** organized in logical folders
-- **19 Stored Procedures** for ETL operations
-- **~312 KB** of production-quality T-SQL code
-- **1 SSIS Package** with complete orchestration
-- **5 Dimensions + 1 Fact Table** (star schema)
-- **120,000+ Sales Records** processed
-- **<5 Second** incremental load times
-
 ---
-
-## 🛠️ Technical Skills Demonstrated
-
-<table>
-<tr>
-<td width="55%" valign="top">
-
-**Data Warehousing**
-- ✅ Dimensional Modeling (Star Schema)
-- ✅ Slowly Changing Dimensions (SCD 0, 1 & 2)
-- ✅ Fact & Dimension Tables Design
-- ✅ Data Warehouse Architecture
-- ✅ Incremental Loading Strategies
-- ✅ ETL Best Practices
-
-**SQL Development**
-- ✅ Advanced T-SQL Programming (3,500+ LOC)
-- ✅ Dynamic SQL Generation
-- ✅ Stored Procedures (19 procedures)
-- ✅ Complex Joins & Aggregations
-- ✅ Window Functions & CTEs
-- ✅ Transaction Management
-
-</td>
-<td width="50%" valign="top">
-
-**ETL & Data Integration**
-- ✅ SSIS Package Development
-- ✅ Incremental Data Loading
-- ✅ Change Data Capture (CDC)
-- ✅ ETL Control Framework
-- ✅ Error Handling & Logging
-- ✅ Performance Optimization
-
-**Data Modeling**
-- ✅ Metadata-Driven Development
-- ✅ Data Dictionary Management
-- ✅ Schema Design (4 schemas)
-- ✅ Column Mapping & Transformation
-- ✅ Data Type Conversion
-- ✅ Business Rules Implementation
-
-</td>
-</tr>
-</table>
-
----
-
-## 🏗️ OLTP DWH Tables Mapping
-
-| DWH_Table   | Source_OLTP_Tables                                               | Row_Count | SCD_Type      | Natural_Key_From_OLTP                     | Surrogate_Key_DWH                     | Foreign_Keys_to_Dimensions                                   | Key_Attributes                                                                                     |
-|-------------|------------------------------------------------------------------|------------|---------------|-------------------------------------------|---------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| **DimAddress**   | Person.Address, Person.StateProvince, Sales.SalesTerritory, Person.CountryRegion | 450        | Type 0        | AddressID (from OLTP)                     | AddressDWKey (Identity/Auto-generated) |  | City, PostalCode, StateProvinceName, TerritoryName, CountryRegionName                        |
-| **DimCustomer**  | Sales.Customer, Sales.Store, Person.Person, Sales.SalesTerritory, Person.CountryRegion | 30,119     | Type 1 & 2  | CustomerID (from Sales.Customer)          | CustomerDWKey (Identity/Auto-generated) |  | FirstName (Type 2), LastName (Type 2), StoreName (Type 1), JobTitle (Type 1), TerritoryName (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End |
-| **DimProduct**    | Production.Product, Production.ProductCategory, Production.ProductSubcategory, Production.UnitMeasure | 504        | Type 1 & 2  | ProductID (from OLTP)                     | ProductDWKey (Identity/Auto-generated)  |  | ProductName, ProductColor, ListPrice (Type 2), StandardCost (Type 1), ProductSize, IsCurrent, ValidityDate_Start, ValidityDate_End |
-| **DimSalesPerson**| Sales.SalesPerson, HumanResources.Employee, Person.Person, Sales.SalesTerritory | 17         | Type 1 & 2  | SalesPersonID (from Sales.SalesPerson)    | SalesPersonDWKey (Identity/Auto-generated) | | FirstName (Type 2), LastName (Type 2), JobTitle (Type 1), SalesQuota (Type 1), Commission (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End   |
-| **FactSales**     | Sales.SalesOrderHeader, Sales.SalesOrderDetail                | 121,317    | Transactional | SalesOrderID, SalesOrderDetailID (from OLTP) | SalesOrderID, SalesOrderDetailID (Pass-through from OLTP) | CustomerID, ProductID, SalesPersonID, AddressID | OrderDate, OrderQty, UnitPrice, LineTotal, OrderSubTotal, OrderFreight, OrderTotalDue               |
-
----
-## 🏗️ Architecture
-
-### 4-Layer Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                    SOURCE SYSTEM (OLTP)                             │
-│                 AdventureWorks2022OLTP Database                     │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐              │
-│  │  Sales  │  │Production│  │ Person  │  │HumanRes │              │
-│  │ Tables  │  │  Tables  │  │ Tables  │  │ Tables  │              │
-│  └─────────┘  └─────────┘  └─────────┘  └─────────┘              │
-└─────────────────────────────────────────────────────────────────────┘
-                             │
-                   ▼ SSIS ETL Package ▼
-                             │
-┌─────────────────────────────────────────────────────────────────────┐
-│            DATA WAREHOUSE (AdventureWorks2022DWH)                   │
-│                                                                     │
-│  ┌────────────────────────────────────────────────────────────┐   │
-│  │                  METADATA LAYER                             │   │
-│  │  • TableNameTableList    • TableNameColumnMap              │   │
-│  │  • SCD Type Definitions  • Transformation Rules            │   │
-│  └────────────────────────────────────────────────────────────┘   │
-│                             │                                       │
-│                             ▼                                       │
-│  ┌────────────────────────────────────────────────────────────┐   │
-│  │                 INTEGRATION LAYER                           │   │
-│  │  • ETLLineage (audit trail)   • ETLCutoff (incremental)    │   │
-│  │  • 19 Stored Procedures       • Control Framework          │   │
-│  └────────────────────────────────────────────────────────────┘   │
-│                             │                                       │
-│                             ▼                                       │
-│  ┌────────────────────────────────────────────────────────────┐   │
-│  │                   STAGING LAYER (STG)                       │   │
-│  │  • Address_staging     • Customer_staging                     │   │
-│  │  • Product_staging     • SalesPerson_staging                  │   │
-│  │  • Sales_staging       (Temporary storage for ETL)           │   │
-│  └────────────────────────────────────────────────────────────┘   │
-│                             │                                       │
-│                             ▼                                       │
-│  ┌────────────────────────────────────────────────────────────┐   │
-│  │                PRODUCTION LAYER (PROD)                      │   │
-│  │  ┌──────────────────────────────────────────────────────┐  │   │
-│  │  │           STAR SCHEMA - DIMENSIONS                    │  │   │
-│  │  │  • DimAddress (SCD Type 0)                           │  │   │
-│  │  │  • DimCustomer (SCD Type 1 & 2)                      │  │   │
-│  │  │  • DimProduct (SCD Type 1 & 2)                       │  │   │
-│  │  │  • DimSalesPerson (SCD Type 1 & 2)                   │  │   │
-│  │  └──────────────────────────────────────────────────────┘  │   │
-│  │  ┌──────────────────────────────────────────────────────┐  │   │
-│  │  │                 FACT TABLE                            │  │   │
-│  │  │  • FactSales (121,317 records)                       │  │   │
-│  │  └──────────────────────────────────────────────────────┘  │   │
-│  └────────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## ✨ Key Features
-
-### 1. **Metadata-Driven Development**
-- 🎯 **Dynamic Table Generator**: Automatically creates staging and dimension tables from metadata definitions
-- 📝 **Self-Documenting**: All table structures and transformations defined in metadata tables
-- 🔧 **Easy Maintenance**: Add new dimensions by updating metadata, not by writing DDL
-- ⚡ **Automated DDL Generation**: One procedure generates all tables based on Excel metadata
-
-### 2. **Slowly Changing Dimensions (SCD)**
-- **Type 0 (Fixed)**: DimAddress - Immutable reference data
-- **Type 1 (Overwrite)**: StoreName, TerritoryID, JobTitle - Current values only
-- **Type 2 (Historical)**: FirstName, LastName, ListPrice - Full audit trail with:
-  - `IsCurrent` flag for active records
-  - `ValidityDate_Start` and `ValidityDate_End` for time travel queries
-  - Automatic versioning on changes
-
-### 3. **Incremental Loading with CDC**
-- 📅 **Cutoff Date Tracking**: Loads only changed records since last ETL run
-- 🔍 **Change Detection**: Validity date columns in source OLTP tables
-- ⚡ **Performance**: <5 second incremental loads vs. hours for full refresh
-- 📊 **Detailed Metrics**: Tracks New, SCD1, and SCD2 row counts separately
-
-### 4. **ETL Control Framework**
-```sql
--- ETL Lineage: Complete audit trail
-ETLLineageKey, TableName, ETLCutoffDateStart, ETLCutoffDateEnd,
-IsSuccessful, NewRowsCount, SCD1RowsCount, SCD2RowsCount,
-ETLTimeDurationMilliSec, ExecutionTimestamp
-
--- ETL Cutoff: Incremental load management
-TableName, ETLCutoffDate (last successful load)
-```
-
-### 5. **SSIS Package Orchestration**
-- 🔄 **Parallel Execution**: Multiple dimensions loaded simultaneously
-- ⚠️ **Error Handling**: Transaction rollback on failures
-- 📝 **Comprehensive Logging**: Every step tracked in control tables
-- 🔧 **Variable-Driven**: Easy to configure and maintain
-
----
-
-
 
 ## 📁 Project Structure
 
@@ -290,70 +100,161 @@ TableName, ETLCutoffDate (last successful load)
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Technical Skills Demonstrated
 
-### Prerequisites
+<table>
+<tr>
+<td width="55%" valign="top">
 
-- **SQL Server 2019+** (Express/Developer Edition works)
-- **SQL Server Integration Services (SSIS)**
-- **SQL Server Management Studio (SSMS) 18+**
-- **AdventureWorks2022 OLTP Database**
+**Data Warehousing**
+- ✅ Dimensional Modeling (Star Schema)
+- ✅ Slowly Changing Dimensions (SCD 0, 1 & 2)
+- ✅ Fact & Dimension Tables Design
+- ✅ Data Warehouse Architecture
+- ✅ Incremental Loading Strategies
+- ✅ ETL Best Practices
 
-### Quick Start (5 minutes)
+**SQL Development**
+- ✅ Advanced T-SQL Programming (3,500+ LOC)
+- ✅ Dynamic SQL Generation
+- ✅ Stored Procedures (19 procedures)
+- ✅ Complex Joins & Aggregations
+- ✅ Window Functions & CTEs
+- ✅ Transaction Management
 
-#### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/enterprise-data-warehouse.git
-cd enterprise-data-warehouse
-```
+</td>
+<td width="50%" valign="top">
 
-#### 2. Create Databases
-```sql
--- Create or restore OLTP source
-RESTORE DATABASE AdventureWorks2022OLTP
-FROM DISK = 'C:\Path\To\AdventureWorks2022.bak';
+**ETL & Data Integration**
+- ✅ SSIS Package Development
+- ✅ Incremental Data Loading
+- ✅ Change Data Capture (CDC)
+- ✅ ETL Control Framework
+- ✅ Error Handling & Logging
+- ✅ Performance Optimization
 
--- Create empty DWH database
-CREATE DATABASE AdventureWorks2022DWH;
-```
+**Data Modeling**
+- ✅ Metadata-Driven Development
+- ✅ Data Dictionary Management
+- ✅ Schema Design (4 schemas)
+- ✅ Column Mapping & Transformation
+- ✅ Data Type Conversion
+- ✅ Business Rules Implementation
 
-#### 3. Deploy with Master Script
-```sql
-USE AdventureWorks2022DWH;
-GO
-
--- Update paths in Master.sql, then execute:
-:r "SQL Scripts\0. Master Scripts\Master.sql"
-```
-
-This single command will:
-- ✅ Create all schemas (stg, prod, integration, metadata)
-- ✅ Create control tables (ETLLineage, ETLCutoff)
-- ✅ Create metadata mappings for all dimensions
-- ✅ Create all 19 stored procedures
-- ✅ Generate all staging and dimension tables from metadata
-
-#### 4. Prepare OLTP Source
-```sql
-USE AdventureWorks2022OLTP;
-GO
-:r "SQL Scripts\X. Utilis\X3_OLTP_PREP_AddValidityColumns.sql"
-```
-
-#### 5. Run Initial Load
-```sql
--- Execute SSIS package OR run procedures manually:
-EXEC integration.GetUpdatesAddress @ETLCutoffDate, @ETLCutoffDatePrev;
-EXEC integration.LoadUpdatesAddress;
--- Repeat for all dimensions...
-```
-
+</td>
+</tr>
+</table>
 
 ---
+## 🏢 Data Wareshouse Developemnt Process 
 
-## 🔄 ETL Process Flow
+### 1. DWH Setup: OLTP DWH Tables Mapping
 
-### Daily ETL Execution Sequence
+| DWH_Table   | Source_OLTP_Tables                                               | Row_Count | SCD_Type      | Natural_Key_From_OLTP                     | Surrogate_Key_DWH                     | Foreign_Keys_to_Dimensions                                   | Key_Attributes                                                                                     |
+|-------------|------------------------------------------------------------------|------------|---------------|-------------------------------------------|---------------------------------------|--------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| **DimAddress**   | Person.Address, Person.StateProvince, Sales.SalesTerritory, Person.CountryRegion | 450        | Type 0        | AddressID (from OLTP)                     | AddressDWKey (Identity/Auto-generated) |  | City, PostalCode, StateProvinceName, TerritoryName, CountryRegionName                        |
+| **DimCustomer**  | Sales.Customer, Sales.Store, Person.Person, Sales.SalesTerritory, Person.CountryRegion | 30,119     | Type 1 & 2  | CustomerID (from Sales.Customer)          | CustomerDWKey (Identity/Auto-generated) |  | FirstName (Type 2), LastName (Type 2), StoreName (Type 1), JobTitle (Type 1), TerritoryName (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End |
+| **DimProduct**    | Production.Product, Production.ProductCategory, Production.ProductSubcategory, Production.UnitMeasure | 504        | Type 1 & 2  | ProductID (from OLTP)                     | ProductDWKey (Identity/Auto-generated)  |  | ProductName, ProductColor, ListPrice (Type 2), StandardCost (Type 1), ProductSize, IsCurrent, ValidityDate_Start, ValidityDate_End |
+| **DimSalesPerson**| Sales.SalesPerson, HumanResources.Employee, Person.Person, Sales.SalesTerritory | 17         | Type 1 & 2  | SalesPersonID (from Sales.SalesPerson)    | SalesPersonDWKey (Identity/Auto-generated) | | FirstName (Type 2), LastName (Type 2), JobTitle (Type 1), SalesQuota (Type 1), Commission (Type 1), IsCurrent, ValidityDate_Start, ValidityDate_End   |
+| **FactSales**     | Sales.SalesOrderHeader, Sales.SalesOrderDetail                | 121,317    | Transactional | SalesOrderID, SalesOrderDetailID (from OLTP) | SalesOrderID, SalesOrderDetailID (Pass-through from OLTP) | CustomerID, ProductID, SalesPersonID, AddressID | OrderDate, OrderQty, UnitPrice, LineTotal, OrderSubTotal, OrderFreight, OrderTotalDue               |
+
+### 2. Architecture
+
+**4-Layer Architecture**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SOURCE SYSTEM (OLTP)                             │
+│                 AdventureWorks2022OLTP Database                     │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐              │
+│  │  Sales  │  │Production│  │ Person  │  │HumanRes │              │
+│  │ Tables  │  │  Tables  │  │ Tables  │  │ Tables  │              │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘              │
+└─────────────────────────────────────────────────────────────────────┘
+                             │
+                   ▼ SSIS ETL Package ▼
+                             │
+┌─────────────────────────────────────────────────────────────────────┐
+│            DATA WAREHOUSE (AdventureWorks2022DWH)                   │
+│                                                                     │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │                  METADATA LAYER                             │   │
+│  │  • TableNameTableList    • TableNameColumnMap              │   │
+│  │  • SCD Type Definitions  • Transformation Rules            │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                             │                                       │
+│                             ▼                                       │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │                 INTEGRATION LAYER                           │   │
+│  │  • ETLLineage (audit trail)   • ETLCutoff (incremental)    │   │
+│  │  • 19 Stored Procedures       • Control Framework          │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                             │                                       │
+│                             ▼                                       │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │                   STAGING LAYER (STG)                       │   │
+│  │  • Address_staging     • Customer_staging                     │   │
+│  │  • Product_staging     • SalesPerson_staging                  │   │
+│  │  • Sales_staging       (Temporary storage for ETL)           │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                             │                                       │
+│                             ▼                                       │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │                PRODUCTION LAYER (PROD)                      │   │
+│  │  ┌──────────────────────────────────────────────────────┐  │   │
+│  │  │           STAR SCHEMA - DIMENSIONS                    │  │   │
+│  │  │  • DimAddress (SCD Type 0)                           │  │   │
+│  │  │  • DimCustomer (SCD Type 1 & 2)                      │  │   │
+│  │  │  • DimProduct (SCD Type 1 & 2)                       │  │   │
+│  │  │  • DimSalesPerson (SCD Type 1 & 2)                   │  │   │
+│  │  └──────────────────────────────────────────────────────┘  │   │
+│  │  ┌──────────────────────────────────────────────────────┐  │   │
+│  │  │                 FACT TABLE                            │  │   │
+│  │  │  • FactSales (121,317 records)                       │  │   │
+│  │  └──────────────────────────────────────────────────────┘  │   │
+│  └────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+
+### 3. Implemented Key Features 
+
+  **A. Metadata-Driven Development**
+  - 🎯 **Dynamic Table Generator**: Automatically creates staging and dimension tables from metadata definitions
+  - 📝 **Self-Documenting**: All table structures and transformations defined in metadata tables
+  - 🔧 **Easy Maintenance**: Add new dimensions by updating metadata, not by writing DDL
+  - ⚡ **Automated DDL Generation**: One procedure generates all tables based on [Excel metadata](Data-Dictionnary.xlsx)
+  
+  **B. Slowly Changing Dimensions (SCD)**
+    - `IsCurrent` flag for active records
+    - `ValidityDate_Start` and `ValidityDate_End` for time travel queries
+    - Automatic versioning on changes
+  
+  **C. Incremental Loading with CDC**
+  - 📅 **Cutoff Date Tracking**: Loads only changed records since last ETL run
+  - 🔍 **Change Detection**: Validity date columns in source OLTP tables
+  - ⚡ **Performance**: <5 second incremental loads vs. hours for full refresh
+  - 📊 **Detailed Metrics**: Tracks New, SCD1, and SCD2 row counts separately
+  
+  **D. ETL Control Framework**
+  ```sql
+  -- ETL Lineage: Complete audit trail
+  ETLLineageKey, TableName, ETLCutoffDateStart, ETLCutoffDateEnd,
+  IsSuccessful, NewRowsCount, SCD1RowsCount, SCD2RowsCount,
+  ETLTimeDurationMilliSec, ExecutionTimestamp
+  
+  -- ETL Cutoff: Incremental load management
+  TableName, ETLCutoffDate (last successful load)
+  ```
+  
+  **E. SSIS Package Orchestration**
+  - 🔄 **Parallel Execution**: Multiple dimensions loaded simultaneously
+  - ⚠️ **Error Handling**: Transaction rollback on failures
+  - 📝 **Comprehensive Logging**: Every step tracked in control tables
+  - 🔧 **Variable-Driven**: Easy to configure and maintain
+
+
+### 4. ETL Process Flow: Daily ETL Execution Sequence
 
 ```
 1. INITIALIZE
@@ -382,33 +283,9 @@ EXEC integration.LoadUpdatesAddress;
        └─> Update ETLCutoff with new cutoff date
 ```
 
-### SCD Type 2 Example
 
-```sql
--- Before: Customer changes their name
-CustomerID | FirstName | LastName | IsCurrent | ValidityDate_Start | ValidityDate_End
------------|-----------|----------|-----------|-------------------|------------------
-1          | John      | Smith    | 1         | 2024-01-01        | 9999-12-31
+### 5. Final Result: Star Schema Data Model
 
--- After: ETL processes name change
-CustomerID | FirstName | LastName | IsCurrent | ValidityDate_Start | ValidityDate_End
------------|-----------|----------|-----------|-------------------|------------------
-1          | John      | Smith    | 0         | 2024-01-01        | 2024-06-15   ← Historical
-1          | John      | Doe      | 1         | 2024-06-15        | 9999-12-31   ← Current
-
--- Time travel query: "What was customer 1's name in March 2024?"
-SELECT FirstName, LastName 
-FROM prod.DimCustomer
-WHERE CustomerID = 1
-  AND '2024-03-01' BETWEEN ValidityDate_Start AND ValidityDate_End
--- Returns: John Smith
-```
-
----
-
-## 📊 Data Model
-
-### Star Schema Overview
 
 ```
                        ┌──────────────┐
@@ -458,7 +335,7 @@ WHERE CustomerID = 1
                    17 rows
 ```
 
-### Table Definitions
+**Table Definitions**
 
 | Table | Type | Rows | SCD Type | Key Attributes |
 |-------|------|------|----------|----------------|
@@ -467,6 +344,18 @@ WHERE CustomerID = 1
 | **DimProduct** | Dimension | 504 | Type 1 & 2 | ListPrice (2), ProductName, Category |
 | **DimSalesPerson** | Dimension | 17 | Type 1 & 2 | FirstName (2), JobTitle (1) |
 | **FactSales** | Fact | 121,317 | N/A | OrderQty, UnitPrice, LineTotal |
+
+
+### 6. Performance & Statistics
+
+|Component | Scale	| Performance |
+|--------|-------|--------|
+Code Base |	43 SQL files, 19 stored procedures (~3,500 LOC) | Production-quality|
+Architecture |	5 dimensions + 1 fact table |	Star schema|
+Data Volume |	120,000+ sales records |	Full history with SCD Type 2|
+Initial Load |	150,000 rows |	2-3 minutes|
+Incremental Load |	500 changes/day |	<5 seconds|
+ETL Orchestration |	1 SSIS master package |	Automated execution|
 
 ---
 
@@ -488,26 +377,6 @@ WHERE CustomerID = 1
 
 ---
 
-## 👨‍💻 Author
-
-**Your Name**
-- 💼 LinkedIn: [My LinkedIn Profile](https://www.linkedin.com/in/aharkane/)
-- 🐙 GitHub: [@aharkane](https://github.com/aharkane)
-- 📧 Email: your.harkaneamine@gmail.com
-
-### About This Project
-
-This project represents **3+ months of development** demonstrating:
-- Enterprise-grade data warehouse design
-- Production-ready ETL implementation
-- Advanced T-SQL programming skills
-- SSIS package development
-- Comprehensive documentation
-
-
-
----
-
 ## 🎯 Project Highlights for Resume/LinkedIn
 
 > **Enterprise Data Warehouse Engineer | Personal Project**  
@@ -523,41 +392,6 @@ This project represents **3+ months of development** demonstrating:
 
 ---
 
-## 📈 Performance Metrics
 
-| Metric | Value | Impact |
-|--------|-------|--------|
-| **Initial Load** | ~150,000 rows | 2-3 minutes |
-| **Incremental Load** | ~500 changes/day | <5 seconds |
-| **SCD Type 2 Changes** | ~600 tracked | Full history |
-| **ETL Procedures** | 19 procedures | Modular & maintainable |
-| **Lines of Code** | ~3,500 LOC | Production-quality |
-| **Dimensions** | 5 dimensions | Comprehensive coverage |
 | **Fact Records** | 121,317 rows | Real business data |
 
----
-
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Microsoft** - AdventureWorks sample database
-- **Kimball Group** - Dimensional modeling methodology
-- **Ralph Kimball** - "The Data Warehouse Toolkit"
-
----
-
-<div align="center">
-
-**⭐ If you found this project helpful, please give it a star! ⭐**
-
-Made with ❤️ and ☕ by [Harkane Amine]
-
-*Last Updated: November 2025*
-
-</div>
