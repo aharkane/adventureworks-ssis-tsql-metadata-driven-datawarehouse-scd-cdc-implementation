@@ -1,7 +1,5 @@
 # 📁 Project Structure
 
-Based on your current organization at:  
-`D:\JupyterNotebooks_dir\Github Projects\4. SSIS\1. DWH Infrastructure Builder`
 
 ```
 1. DWH Infrastructure Builder/
